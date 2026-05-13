@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Noemie Chassagne — Build Your AI Character</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --black:#0A0A0A;
+  --cream:#F2EDE4;
+  --dust:#C4826A;
+  --gold:#D4A853;
+  --muted:#6B6057;
+  --light:#A09287;
+  --line:#222222;
+  --card:#111111;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--cream);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:14px 32px;
+  display:flex;justify-content:space-between;align-items:center;
+  background:rgba(10,10,10,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--line);
+}
+.nav-logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--cream);text-decoration:none;letter-spacing:-0.5px}
+.nav-logo em{color:var(--dust);font-style:italic}
+.nav-cta{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:#0A0A0A;background:var(--dust);
+  padding:10px 20px;text-decoration:none;
+  transition:background 0.25s;
+}
+.nav-cta:hover{background:var(--gold)}
+
+/* BANNER */
+.top-banner{
+  background:linear-gradient(90deg,var(--dust),var(--gold),var(--dust));
+  background-size:200% 100%;
+  animation:shimmer 4s linear infinite;
+  padding:10px;text-align:center;
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;
+  color:#0A0A0A;font-weight:500;
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  text-align:center;padding:120px 32px 80px;
+  position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;
+  width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(196,130,106,0.08) 0%,transparent 65%);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  pointer-events:none;
+  animation:glowPulse 6s ease-in-out infinite;
+}
+@keyframes glowPulse{0%,100%{opacity:0.6;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+
+/* Rings */
+.ring{
+  position:absolute;border-radius:50%;
+  border:1px solid rgba(196,130,106,0.1);
+  top:50%;left:50%;
+  pointer-events:none;
+  animation:ringPulse 8s ease-in-out infinite;
+}
+.ring-1{width:400px;height:400px;margin-top:-200px;margin-left:-200px;animation-delay:0s}
+.ring-2{width:650px;height:650px;margin-top:-325px;margin-left:-325px;animation-delay:2s}
+.ring-3{width:900px;height:900px;margin-top:-450px;margin-left:-450px;animation-delay:4s}
+@keyframes ringPulse{0%,100%{opacity:0.1;transform:scale(1)}50%{opacity:0.2;transform:scale(1.02)}}
+
+/* Blobs */
+.blob{position:absolute;pointer-events:none}
+.blob-1{top:12%;right:3%;width:200px;height:200px;animation:float1 9s ease-in-out infinite;opacity:0.9}
+.blob-2{bottom:15%;left:2%;width:140px;height:140px;animation:float2 11s ease-in-out infinite;opacity:0.85}
+@keyframes float1{0%,100%{transform:translateY(0) rotate(0deg)}33%{transform:translateY(-16px) rotate(6deg)}66%{transform:translateY(8px) rotate(-4deg)}}
+@keyframes float2{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-12px) rotate(-8deg)}}
+
+.hero-eyebrow{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:5px;
+  color:var(--dust);margin-bottom:20px;
+  animation:fadeUp 0.7s 0.1s both;
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(36px,7vw,72px);
+  font-weight:900;color:var(--cream);line-height:0.95;letter-spacing:-2px;
+  margin-bottom:8px;
+  animation:fadeUp 0.7s 0.2s both;
+}
+.hero-italic{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(24px,5vw,48px);
+  font-style:italic;font-weight:400;color:var(--dust);
+  margin-bottom:28px;
+  animation:fadeUp 0.7s 0.3s both;
+}
+.hero-divider{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--dust),transparent);
+  margin:0 auto 24px;
+  animation:fadeUp 0.7s 0.4s both;
+}
+.hero-sub{
+  font-size:13px;color:var(--muted);line-height:1.8;
+  max-width:400px;margin:0 auto 28px;
+  animation:fadeUp 0.7s 0.5s both;
+}
+.hero-tags{
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:32px;
+  animation:fadeUp 0.7s 0.6s both;
+}
+.tag{
+  font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;
+  color:#0A0A0A;background:var(--dust);padding:6px 12px;
+}
+.hero-btns{
+  display:flex;gap:12px;justify-content:center;flex-wrap:wrap;
+  animation:fadeUp 0.7s 0.7s both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* BUTTONS */
+.btn-primary{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:#0A0A0A;background:var(--dust);
+  padding:14px 28px;text-decoration:none;
+  transition:background 0.25s,transform 0.15s;display:inline-block;
+}
+.btn-primary:hover{background:var(--gold);transform:translateY(-1px)}
+.btn-ghost{
+  font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;
+  color:var(--dust);background:transparent;
+  border:1px solid var(--dust);
+  padding:14px 28px;text-decoration:none;
+  transition:all 0.25s;display:inline-block;
+}
+.btn-ghost:hover{background:rgba(196,130,106,0.1);transform:translateY(-1px)}
+
+/* SECTIONS */
+section{padding:80px 32px}
+.sec-eye{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:4px;color:var(--dust);text-align:center;margin-bottom:10px}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(26px,5vw,44px);font-weight:700;color:var(--cream);text-align:center;line-height:1.05;margin-bottom:10px}
+.sec-title em{font-style:italic;color:var(--dust)}
+.sec-sub{font-size:11px;color:var(--muted);text-align:center;line-height:1.8;max-width:380px;margin:0 auto 40px}
+.acc-rule{width:100%;height:1px;background:linear-gradient(90deg,transparent,var(--dust),transparent);margin-bottom:44px}
+
+/* PROOF */
+.proof-section{
+  background:var(--card);
+  padding:60px 32px;
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;max-width:480px;margin:0 auto 32px}
+.proof-stat{text-align:center;padding:24px 16px}
+.proof-num{font-family:'Playfair Display',serif;font-size:48px;font-weight:900;color:var(--dust);line-height:1;margin-bottom:6px}
+.proof-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--muted)}
+.proof-quote{text-align:center;font-size:10px;color:var(--muted);font-style:italic;max-width:400px;margin:0 auto}
+
+/* PRODUCTS */
+.products-wrap{max-width:560px;margin:0 auto;display:grid;gap:20px}
+.product-card{
+  background:var(--card);border:1px solid var(--line);
+  padding:28px 28px 24px;position:relative;overflow:hidden;
+  transition:border-color 0.25s,transform 0.2s;
+}
+.product-card:hover{border-color:rgba(196,130,106,0.35);transform:translateY(-2px)}
+.card-top-bar{position:absolute;top:0;left:0;right:0;height:2px;background:var(--dust)}
+.card-top-bar.gold{background:linear-gradient(90deg,var(--dust),var(--gold))}
+.card-ghost-num{
+  position:absolute;right:16px;top:10px;
+  font-family:'Playfair Display',serif;font-size:72px;font-weight:900;
+  color:transparent;-webkit-text-stroke:1px rgba(196,130,106,0.12);
+  line-height:1;pointer-events:none;
+}
+.card-badges{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.badge{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;padding:5px 10px;display:inline-block}
+.badge-free{background:var(--muted);color:var(--cream)}
+.badge-hot{background:var(--dust);color:#0A0A0A}
+.badge-gold{background:var(--gold);color:#0A0A0A}
+.badge-live{background:rgba(196,130,106,0.15);color:var(--dust);border:1px solid rgba(196,130,106,0.3)}
+.card-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);line-height:1.1;margin-bottom:10px}
+.card-title em{font-style:italic;color:var(--dust)}
+.card-desc{font-size:10px;color:var(--muted);line-height:1.75;margin-bottom:16px}
+.card-includes-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--dust);margin-bottom:8px}
+.card-item{font-size:9px;color:var(--light);line-height:1.7;padding-left:14px;position:relative}
+.card-item::before{content:'·';position:absolute;left:0;color:var(--dust)}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:20px;gap:12px;flex-wrap:wrap}
+.card-price{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--cream)}
+.card-price span{font-size:11px;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:400}
+.card-price-muted{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--muted)}
+
+/* HOW IT WORKS */
+.steps-wrap{max-width:480px;margin:0 auto}
+.step{display:flex;gap:20px;align-items:flex-start;margin-bottom:24px}
+.step-n{font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--dust);opacity:0.35;line-height:1;flex-shrink:0;width:44px}
+.step-title{font-size:11px;font-weight:500;color:var(--cream);margin-bottom:5px}
+.step-body{font-size:9px;color:var(--muted);line-height:1.7}
+
+/* ABOUT */
+.about-wrap{max-width:480px;margin:0 auto}
+.about-quote{
+  font-family:'Playfair Display',serif;font-size:18px;font-style:italic;
+  color:var(--cream);line-height:1.55;margin-bottom:20px;
+  border-left:2px solid var(--dust);padding-left:18px;
+}
+.about-body{font-size:10px;color:var(--muted);line-height:1.85;margin-bottom:24px}
+
+/* FOOTER */
+footer{padding:48px 32px;border-top:1px solid var(--line);text-align:center}
+.footer-logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--cream);margin-bottom:14px}
+.footer-logo em{color:var(--dust);font-style:italic}
+.footer-links{display:flex;gap:24px;justify-content:center;margin-bottom:16px;flex-wrap:wrap}
+.footer-link{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.footer-link:hover{color:var(--dust)}
+.footer-note{font-size:8px;color:rgba(160,146,135,0.35);letter-spacing:1px}
+
+/* 3D BLOB SVGs */
+.blob-svg-wrap{position:absolute;pointer-events:none}
+</style>
+</head>
+<body>
+
+<div class="top-banner">FREE PREVIEW AVAILABLE · NO CREDIT CARD REQUIRED</div>
+
+<nav>
+  <a href="#" class="nav-logo">Noemie<em>.</em></a>
+  <a href="#products" class="nav-cta">GET THE GUIDES →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="ring ring-1"></div>
+  <div class="ring ring-2"></div>
+  <div class="ring ring-3"></div>
+
+  <!-- Gold glossy blob 1 - top right -->
+  <div class="blob blob-1">
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="200" height="200">
+      <defs>
+        <radialGradient id="gold1" cx="30%" cy="22%" r="55%">
+          <stop offset="0%" stop-color="#FFFBE0"/>
+          <stop offset="15%" stop-color="#FFE066"/>
+          <stop offset="40%" stop-color="#F5C518"/>
+          <stop offset="65%" stop-color="#D4A518"/>
+          <stop offset="85%" stop-color="#B8860B"/>
+          <stop offset="100%" stop-color="#7A5800"/>
+        </radialGradient>
+        <radialGradient id="gold1shine" cx="25%" cy="18%" r="30%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+          <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="gold1rim" cx="75%" cy="78%" r="35%">
+          <stop offset="0%" stop-color="#FFD700" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#FFD700" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path d="M55,18 C88,8 132,4 158,32 C184,60 186,98 168,126 C150,154 112,172 78,166 C44,160 14,136 12,100 C10,64 22,28 55,18Z" fill="url(#gold1)"/>
+      <path d="M55,18 C88,8 132,4 158,32 C184,60 186,98 168,126 C150,154 112,172 78,166 C44,160 14,136 12,100 C10,64 22,28 55,18Z" fill="url(#gold1shine)"/>
+      <path d="M55,18 C88,8 132,4 158,32 C184,60 186,98 168,126 C150,154 112,172 78,166 C44,160 14,136 12,100 C10,64 22,28 55,18Z" fill="url(#gold1rim)"/>
+      <ellipse cx="75" cy="50" rx="32" ry="14" fill="white" opacity="0.55" transform="rotate(-30 75 50)"/>
+      <ellipse cx="120" cy="38" rx="12" ry="6" fill="white" opacity="0.35" transform="rotate(-20 120 38)"/>
+      <ellipse cx="60" cy="42" rx="8" ry="4" fill="white" opacity="0.25" transform="rotate(-35 60 42)"/>
+    </svg>
+  </div>
+
+  <!-- Gold glossy blob 2 - bottom left -->
+  <div class="blob blob-2">
+    <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg" width="140" height="140">
+      <defs>
+        <radialGradient id="gold2" cx="32%" cy="20%" r="60%">
+          <stop offset="0%" stop-color="#FFFBE0"/>
+          <stop offset="18%" stop-color="#FFE566"/>
+          <stop offset="45%" stop-color="#F0B429"/>
+          <stop offset="72%" stop-color="#C4880A"/>
+          <stop offset="100%" stop-color="#7A5200"/>
+        </radialGradient>
+        <radialGradient id="gold2shine" cx="28%" cy="16%" r="28%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path d="M80,12 C112,6 142,26 150,58 C158,90 140,124 108,138 C76,152 40,140 24,110 C8,80 16,42 40,26 C64,10 48,18 80,12Z" fill="url(#gold2)"/>
+      <path d="M80,12 C112,6 142,26 150,58 C158,90 140,124 108,138 C76,152 40,140 24,110 C8,80 16,42 40,26 C64,10 48,18 80,12Z" fill="url(#gold2shine)"/>
+      <ellipse cx="65" cy="40" rx="22" ry="10" fill="white" opacity="0.6" transform="rotate(-30 65 40)"/>
+      <ellipse cx="98" cy="32" rx="10" ry="5" fill="white" opacity="0.3" transform="rotate(-18 98 32)"/>
+    </svg>
+  </div>
+
+  <div class="hero-eyebrow">AI Character Creation · Paris · 2026</div>
+  <div class="hero-title">Build an AI Influencer</div>
+  <div class="hero-italic">that actually works.</div>
+  <div class="hero-divider"></div>
+  <div class="hero-sub">Prompts, strategy, and the exact system behind @noemie_chsgne — an AI ballerina built from zero.</div>
+  <div class="hero-tags">
+    <span class="tag">Google AI Studio</span>
+    <span class="tag">Nano Banana</span>
+    <span class="tag">Kling AI</span>
+    <span class="tag">500+ images generated</span>
+  </div>
+  <div class="hero-btns">
+    <a href="#products" class="btn-primary">SEE ALL GUIDES →</a>
+    <a href="#free" class="btn-ghost">GET FREE PREVIEW</a>
+  </div>
+</div>
+
+<!-- PROOF -->
+<div class="proof-section">
+  <!-- Small chrome blob deco -->
+  <div style="position:absolute;top:-24px;right:32px;animation:float2 10s ease-in-out infinite;">
+    <svg viewBox="0 0 90 90" width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="goldProof" cx="30%" cy="22%" r="58%">
+          <stop offset="0%" stop-color="#FFFBE0"/>
+          <stop offset="20%" stop-color="#FFE066"/>
+          <stop offset="50%" stop-color="#F5C518"/>
+          <stop offset="80%" stop-color="#C4880A"/>
+          <stop offset="100%" stop-color="#7A5200"/>
+        </radialGradient>
+        <radialGradient id="goldProofShine" cx="26%" cy="18%" r="28%">
+          <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <path d="M45,5 C63,2 78,14 80,32 C82,50 68,68 48,72 C28,76 8,62 6,44 C4,26 20,8 45,5Z" fill="url(#goldProof)"/>
+      <path d="M45,5 C63,2 78,14 80,32 C82,50 68,68 48,72 C28,76 8,62 6,44 C4,26 20,8 45,5Z" fill="url(#goldProofShine)"/>
+      <ellipse cx="36" cy="22" rx="12" ry="6" fill="white" opacity="0.65" transform="rotate(-28 36 22)"/>
+      <ellipse cx="54" cy="17" rx="6" ry="3" fill="white" opacity="0.35" transform="rotate(-15 54 17)"/>
+    </svg>
+  </div>
+  <div class="proof-grid">
+    <div class="proof-stat">
+      <div class="proof-num">50</div>
+      <div class="proof-label">PROMPTS</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">7</div>
+      <div class="proof-label">CATEGORIES</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">$30</div>
+      <div class="proof-label">TOOLS / MONTH</div>
+    </div>
+    <div class="proof-stat">
+      <div class="proof-num">3</div>
+      <div class="proof-label">PLATFORMS</div>
+    </div>
+  </div>
+  <p class="proof-quote">"The technology is accessible. The craft is where most people struggle." — @noemie_chsgne</p>
+</div>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="sec-eye">GUIDES & RESOURCES</div>
+  <div class="sec-title">Everything you need<br><em>to build her.</em></div>
+  <div class="sec-sub">Three products. One system. Start free, scale when ready.</div>
+  <div class="acc-rule"></div>
+
+  <div class="products-wrap">
+
+    <!-- FREE -->
+    <div class="product-card" id="free">
+      <div class="card-top-bar"></div>
+      <div class="card-ghost-num">01</div>
+      <div class="card-badges">
+        <span class="badge badge-free">FREE</span>
+      </div>
+      <div class="card-title">AI Character<br><em>Prompt Pack Preview</em></div>
+      <div class="card-desc">15 prompts from Sections 01 and 02. The exact format used to generate @noemie_chsgne. No email required.</div>
+      <div class="card-includes-label">WHAT'S INSIDE</div>
+      <div class="card-item">5 master reference prompts — front, profile, back, close-up</div>
+      <div class="card-item">10 travel & location prompts</div>
+      <div class="card-item">How-to instructions for Google AI Studio</div>
+      <div class="card-footer">
+        <div class="card-price-muted">Free <span style="font-size:10px;color:var(--muted)">forever</span></div>
+        <a href="https://github.com" class="btn-ghost" target="_blank">DOWNLOAD FREE →</a>
+      </div>
+    </div>
+
+    <!-- PROMPT PACK $17 -->
+    <div class="product-card" style="border-color:rgba(196,130,106,0.25);">
+      <div class="card-top-bar gold"></div>
+      <div class="card-ghost-num">02</div>
+      <!-- Gold glossy star blob -->
+      <div style="position:absolute;top:16px;right:16px;animation:float1 9s ease-in-out infinite;pointer-events:none;">
+        <svg viewBox="0 0 100 100" width="90" height="90" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="goldStar" cx="32%" cy="24%" r="55%">
+              <stop offset="0%" stop-color="#FFFBE0"/>
+              <stop offset="15%" stop-color="#FFE566"/>
+              <stop offset="42%" stop-color="#F5C518"/>
+              <stop offset="70%" stop-color="#D4A518"/>
+              <stop offset="100%" stop-color="#7A5200"/>
+            </radialGradient>
+            <radialGradient id="goldStarShine" cx="28%" cy="20%" r="30%">
+              <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <path d="M50,8 L60,35 L88,35 L66,52 L75,80 L50,63 L25,80 L34,52 L12,35 L40,35Z" fill="url(#goldStar)"/>
+          <path d="M50,8 L60,35 L88,35 L66,52 L75,80 L50,63 L25,80 L34,52 L12,35 L40,35Z" fill="url(#goldStarShine)"/>
+          <ellipse cx="42" cy="26" rx="10" ry="5" fill="white" opacity="0.65" transform="rotate(-25 42 26)"/>
+          <ellipse cx="58" cy="20" rx="5" ry="3" fill="white" opacity="0.35" transform="rotate(-15 58 20)"/>
+        </svg>
+      </div>
+      <div class="card-badges">
+        <span class="badge badge-hot">MOST POPULAR</span>
+        <span class="badge badge-gold">$17</span>
+      </div>
+      <div class="card-title">AI Character<br><em>Prompt Pack — Full</em></div>
+      <div class="card-desc">All 50 prompts. The complete system used to generate luxury AI influencer content across Instagram, Telegram, and Threads.</div>
+      <div class="card-includes-label">7 SECTIONS INCLUDED</div>
+      <div class="card-item">Character Base — 5 master reference prompts</div>
+      <div class="card-item">Travel & Locations — 10 prompts</div>
+      <div class="card-item">Morning & Lifestyle — 10 prompts</div>
+      <div class="card-item">Evening & Going Out — 10 prompts</div>
+      <div class="card-item">Beauty Collaborations — 5 prompts</div>
+      <div class="card-item">Video Reels (Kling AI) — 5 prompts</div>
+      <div class="card-item">Starter Kit — negative prompt, skin enhancement, clothing & gaze rules</div>
+      <div class="card-footer">
+        <div class="card-price">$17 <span>one-time</span></div>
+        <a href="https://web.tribute.tg/p/vzW" class="btn-primary" target="_blank">GET THE PACK →</a>
+      </div>
+    </div>
+
+    <!-- FULL GUIDE $55 -->
+    <div class="product-card">
+      <div class="card-top-bar" style="background:var(--gold)"></div>
+      <div class="card-ghost-num">03</div>
+      <div class="card-badges">
+        <span class="badge badge-live">AVAILABLE NOW</span>
+        <span class="badge" style="border:1px solid var(--line);color:var(--light);">$55</span>
+      </div>
+      <div class="card-title">Build Your AI Influencer<br><em>Full Guide</em></div>
+      <div class="card-desc">From concept to monetisation. The complete step-by-step guide to building, launching, and growing an AI character account from zero.</div>
+      <div class="card-includes-label">WHAT'S INSIDE</div>
+      <div class="card-item">How to create a believable character backstory</div>
+      <div class="card-item">Visual identity and face consistency rules</div>
+      <div class="card-item">Platform strategy — Instagram, Telegram, Threads</div>
+      <div class="card-item">How to avoid bans — what I learned the hard way</div>
+      <div class="card-item">Monetisation: subscriptions, brand collabs, digital products</div>
+      <div class="card-item">All 50 prompts included</div>
+      <div class="card-footer">
+        <div class="card-price">$55 <span>one-time</span></div>
+        <a href="https://web.tribute.tg/p/vzW" class="btn-primary" target="_blank">GET THE GUIDE →</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section style="background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:80px 32px;position:relative;overflow:hidden;">
+  <!-- Floating blob deco -->
+  <!-- Floating AI character icons -->
+  <div style="display:flex;justify-content:center;gap:32px;margin-bottom:48px;flex-wrap:wrap;">
+    <!-- Camera -->
+    <div style="animation:float1 8s ease-in-out infinite;text-align:center;">
+      <svg viewBox="0 0 64 64" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="iconG1" cx="30%" cy="25%" r="55%">
+            <stop offset="0%" stop-color="#FFFBE0"/>
+            <stop offset="25%" stop-color="#FFE066"/>
+            <stop offset="55%" stop-color="#F5C518"/>
+            <stop offset="100%" stop-color="#8B6200"/>
+          </radialGradient>
+        </defs>
+        <rect x="6" y="18" width="52" height="36" rx="6" fill="url(#iconG1)"/>
+        <circle cx="32" cy="36" r="10" fill="#7A5200" opacity="0.5"/>
+        <circle cx="32" cy="36" r="7" fill="#C4880A" opacity="0.6"/>
+        <circle cx="32" cy="36" r="3.5" fill="#FFFBE0" opacity="0.9"/>
+        <rect x="22" y="11" width="14" height="9" rx="3" fill="url(#iconG1)"/>
+        <circle cx="50" cy="24" r="3" fill="#FFFBE0" opacity="0.7"/>
+        <ellipse cx="24" cy="30" rx="4" ry="2" fill="white" opacity="0.5" transform="rotate(-30 24 30)"/>
+      </svg>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#6B6057;margin-top:6px;">CAMERA</div>
+    </div>
+    <!-- Sunglasses -->
+    <div style="animation:float2 10s ease-in-out infinite;text-align:center;">
+      <svg viewBox="0 0 64 64" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="iconG2" cx="28%" cy="22%" r="55%">
+            <stop offset="0%" stop-color="#FFFBE0"/>
+            <stop offset="30%" stop-color="#FFE066"/>
+            <stop offset="65%" stop-color="#F5C518"/>
+            <stop offset="100%" stop-color="#8B6200"/>
+          </radialGradient>
+        </defs>
+        <rect x="4" y="26" width="24" height="18" rx="9" fill="url(#iconG2)"/>
+        <rect x="36" y="26" width="24" height="18" rx="9" fill="url(#iconG2)"/>
+        <rect x="28" y="30" width="8" height="4" rx="2" fill="url(#iconG2)"/>
+        <rect x="2" y="30" width="4" height="3" rx="1.5" fill="#C4880A"/>
+        <rect x="58" y="30" width="4" height="3" rx="1.5" fill="#C4880A"/>
+        <ellipse cx="12" cy="31" rx="5" ry="3" fill="white" opacity="0.45" transform="rotate(-20 12 31)"/>
+        <ellipse cx="48" cy="31" rx="5" ry="3" fill="white" opacity="0.45" transform="rotate(-20 48 31)"/>
+      </svg>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#6B6057;margin-top:6px;">STYLE</div>
+    </div>
+    <!-- Passport / Document -->
+    <div style="animation:float1 12s 1s ease-in-out infinite;text-align:center;">
+      <svg viewBox="0 0 64 64" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="iconG3" cx="30%" cy="22%" r="55%">
+            <stop offset="0%" stop-color="#FFFBE0"/>
+            <stop offset="25%" stop-color="#FFE066"/>
+            <stop offset="60%" stop-color="#F5C518"/>
+            <stop offset="100%" stop-color="#8B6200"/>
+          </radialGradient>
+        </defs>
+        <rect x="10" y="6" width="44" height="52" rx="5" fill="url(#iconG3)"/>
+        <circle cx="32" cy="26" r="9" fill="#C4880A" opacity="0.5"/>
+        <circle cx="32" cy="26" r="6" fill="#FFFBE0" opacity="0.7"/>
+        <rect x="18" y="40" width="28" height="3" rx="1.5" fill="#8B6200" opacity="0.4"/>
+        <rect x="18" y="46" width="20" height="3" rx="1.5" fill="#8B6200" opacity="0.3"/>
+        <ellipse cx="26" cy="21" rx="4" ry="2" fill="white" opacity="0.5" transform="rotate(-25 26 21)"/>
+      </svg>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#6B6057;margin-top:6px;">IDENTITY</div>
+    </div>
+    <!-- Handbag -->
+    <div style="animation:float2 9s 2s ease-in-out infinite;text-align:center;">
+      <svg viewBox="0 0 64 64" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="iconG4" cx="28%" cy="22%" r="55%">
+            <stop offset="0%" stop-color="#FFFBE0"/>
+            <stop offset="22%" stop-color="#FFE066"/>
+            <stop offset="55%" stop-color="#F5C518"/>
+            <stop offset="100%" stop-color="#8B6200"/>
+          </radialGradient>
+        </defs>
+        <path d="M14,26 Q14,20 20,20 L44,20 Q50,20 50,26 L52,54 Q52,58 48,58 L16,58 Q12,58 12,54 Z" fill="url(#iconG4)"/>
+        <path d="M24,20 Q24,12 32,12 Q40,12 40,20" fill="none" stroke="#C4880A" stroke-width="3" stroke-linecap="round"/>
+        <rect x="28" y="36" width="8" height="6" rx="3" fill="#8B6200" opacity="0.5"/>
+        <ellipse cx="22" cy="30" rx="5" ry="3" fill="white" opacity="0.45" transform="rotate(-20 22 30)"/>
+      </svg>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#6B6057;margin-top:6px;">FASHION</div>
+    </div>
+    <!-- AI chip / brain -->
+    <div style="animation:float1 11s 0.5s ease-in-out infinite;text-align:center;">
+      <svg viewBox="0 0 64 64" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="iconG5" cx="30%" cy="24%" r="55%">
+            <stop offset="0%" stop-color="#FFFBE0"/>
+            <stop offset="25%" stop-color="#FFE066"/>
+            <stop offset="58%" stop-color="#F5C518"/>
+            <stop offset="100%" stop-color="#8B6200"/>
+          </radialGradient>
+        </defs>
+        <rect x="14" y="14" width="36" height="36" rx="6" fill="url(#iconG5)"/>
+        <rect x="20" y="20" width="24" height="24" rx="3" fill="#C4880A" opacity="0.35"/>
+        <line x1="20" y1="26" x2="8" y2="26" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="32" x2="8" y2="32" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="20" y1="38" x2="8" y2="38" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="44" y1="26" x2="56" y2="26" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="44" y1="32" x2="56" y2="32" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="44" y1="38" x2="56" y2="38" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="26" y1="14" x2="26" y2="8" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="32" y1="14" x2="32" y2="8" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="38" y1="14" x2="38" y2="8" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="26" y1="50" x2="26" y2="56" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="32" y1="50" x2="32" y2="56" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="38" y1="50" x2="38" y2="56" stroke="#D4A518" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="27" cy="27" rx="4" ry="2" fill="white" opacity="0.5" transform="rotate(-25 27 27)"/>
+      </svg>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#6B6057;margin-top:6px;">AI TECH</div>
+    </div>
+    <!-- Plane -->
+    <div style="animation:float2 13s 1.5s ease-in-out infinite;text-align:center;">
+      <svg viewBox="0 0 64 64" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="iconG6" cx="30%" cy="22%" r="55%">
+            <stop offset="0%" stop-color="#FFFBE0"/>
+            <stop offset="25%" stop-color="#FFE566"/>
+            <stop offset="55%" stop-color="#F5C518"/>
+            <stop offset="100%" stop-color="#8B6200"/>
+          </radialGradient>
+        </defs>
+        <path d="M8,32 L28,22 L52,10 L46,28 L56,26 L50,36 L40,34 L28,48 L22,44 L34,30 L18,36 Z" fill="url(#iconG6)"/>
+        <ellipse cx="24" cy="24" rx="5" ry="2.5" fill="white" opacity="0.5" transform="rotate(-40 24 24)"/>
+      </svg>
+      <div style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;color:#6B6057;margin-top:6px;">TRAVEL</div>
+    </div>
+  </div>
+
+  <div class="sec-eye">HOW IT WORKS</div>
+  <div class="sec-title">Six steps.<br><em>One system.</em></div>
+  <div class="sec-sub">Start generating professional AI character content in one session.</div>
+  <div class="acc-rule"></div>
+
+  <div class="steps-wrap">
+    <div class="step"><div class="step-n">01</div><div><div class="step-title">Upload reference photos</div><div class="step-body">Generate master references using Section 01 prompts. Upload them at the start of every new chat. This is the single most important step for face consistency.</div></div></div>
+    <div class="step"><div class="step-n">02</div><div><div class="step-title">Paste the starter prompt</div><div class="step-body">Copy Prompt #46 into your first message in Google AI Studio. It defines character rules, clothing style, lighting, and technical parameters in one block.</div></div></div>
+    <div class="step"><div class="step-n">03</div><div><div class="step-title">Add the negative prompt</div><div class="step-body">Copy Prompt #47 into the Negative Prompt field. Prevents the 12 most common AI mistakes — curly hair, plastic skin, empty backgrounds, identity drift.</div></div></div>
+    <div class="step"><div class="step-n">04</div><div><div class="step-title">Choose your scene</div><div class="step-body">Pick any prompt from Sections 02–06. Customise the location, clothing colour, or mood. Every prompt is ready to copy-paste — no editing required.</div></div></div>
+    <div class="step"><div class="step-n">05</div><div><div class="step-title">Add skin enhancement</div><div class="step-body">Always end with Prompt #48. The difference between average and professional DSLR-quality results. Always.</div></div></div>
+    <div class="step"><div class="step-n">06</div><div><div class="step-title">Post. Rotate. Repeat.</div><div class="step-body">Follow the light and gaze rotation rule (Prompt #50). Consistency across your feed is what makes the character feel real — and keeps the algorithm happy.</div></div></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <div class="sec-eye">ABOUT NOEMIE</div>
+  <div class="sec-title">She's not real.<br><em>The system is.</em></div>
+  <div class="acc-rule"></div>
+  <div class="about-wrap">
+    <div class="about-quote">"I built her from zero. 6 months of iteration, 500+ generated images, three Instagram accounts — two of them banned before I figured out the rules. This pack is everything I wish I had on day one."</div>
+    <div class="about-body">@noemie_chsgne is an AI ballerina from Paris. She's been to Bali, Seychelles, the Met Gala, and the opera. She has a Telegram channel, brand collab content for Louis Vuitton and Chanel, and a growing Instagram.<br><br>Built using Google AI Studio, Nano Banana Pro, and Kling AI — all under $30/month. The strategy, the prompts, and the content system are fully documented in these guides.</div>
+    <a href="#products" class="btn-primary">SEE ALL GUIDES →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Noemie<em>.</em></div>
+  <div class="footer-links">
+    <a href="https://www.instagram.com/noemie_chsgne" class="footer-link" target="_blank">INSTAGRAM</a>
+    <a href="https://www.threads.com/@noemie_chsgne" class="footer-link" target="_blank">THREADS</a>
+    <a href="https://t.me/+sTVVJ4d8hDozZTcy" class="footer-link" target="_blank">TELEGRAM</a>
+    <a href="#products" class="footer-link">GUIDES</a>
+  </div>
+  <div class="footer-note">© 2026 · All content original · Built with AI · @noemie_chsgne</div>
+</footer>
+
+</body>
+</html>
